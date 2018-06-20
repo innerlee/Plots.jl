@@ -534,6 +534,7 @@ function handleColors!(d::KW, arg, csym::Symbol)
             d[csym] = c
         end
         return true
+    catch
     end
     false
 end

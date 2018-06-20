@@ -130,7 +130,7 @@ end
 
 function _inspectdr_getscale(s::Symbol, yaxis::Bool)
 #TODO: Support :asinh, :sqrt
-    kwargs = yaxis? (:tgtmajor=>8, :tgtminor=>2): () #More grid lines on y-axis
+    kwargs = yaxis ? (:tgtmajor=>8, :tgtminor=>2) : () #More grid lines on y-axis
     if :log2 == s
         return InspectDR.AxisScale(:log2; kwargs...)
     elseif :log10 == s
@@ -171,7 +171,7 @@ function _initialize_backend(::InspectDRBackend; kw...)
         _inspectdr_getmplot(r::InspecDRPlotRef) = r.mplot
 
         _inspectdr_getgui(::Any) = nothing
-        _inspectdr_getgui(gplot::InspectDR.GtkPlot) = (gplot.destroyed? nothing: gplot)
+        _inspectdr_getgui(gplot::InspectDR.GtkPlot) = (gplot.destroyed ? nothing : gplot)
         _inspectdr_getgui(r::InspecDRPlotRef) = _inspectdr_getgui(r.gui)
     end
 end
@@ -234,7 +234,7 @@ function _series_added(plt::Plot{InspectDRBackend}, series::Series)
     #Don't do anything without a "subplot" object:  Will process later.
     if nothing == plot; return; end
 
-    _vectorize(v) = isa(v, Vector)? v: collect(v) #InspectDR only supports vectors
+    _vectorize(v) = isa(v, Vector) ? v : collect(v) #InspectDR only supports vectors
     x = _vectorize(series[:x]); y = _vectorize(series[:y])
 
     #No support for polar grid... but can still perform polar transformation:
@@ -277,7 +277,7 @@ For st in :shape:
             end
         end
 
-        i = (nmax >= 2? div(nmax, 2): nmax) #Must pick one set of colors for legend
+        i = (nmax >= 2 ? div(nmax, 2) : nmax) #Must pick one set of colors for legend
         if i > 1 #Add dummy waveform for legend entry:
             linewidth = series[:linewidth]
             linecolor = _inspectdr_mapcolor(cycle(series[:linecolor], i))
@@ -295,7 +295,7 @@ For st in :shape:
         #NOTE: In Plots.jl, :scatter plots have 0-linewidths (I think).
         linewidth = series[:linewidth]
         #More efficient & allows some support for markerstrokewidth:
-        _style = (0==linewidth? :none: series[:linestyle])
+        _style = (0==linewidth ? :none : series[:linestyle])
         wfrm = InspectDR.add(plot, x, y, id=series[:label])
         wfrm.line = InspectDR.line(
             style = _style,
@@ -340,7 +340,7 @@ function _inspectdr_setupsubplot(sp::Subplot{InspectDRBackend})
     const strip = plot.strips[1] #Only 1 strip supported with Plots.jl
 
 	#No independent control of grid???
-	strip.grid = sp[:grid]? gridon: gridoff
+	strip.grid = sp[:grid] ? gridon : gridoff
 
     xaxis = sp[:xaxis]; yaxis = sp[:yaxis]
         plot.xscale = _inspectdr_getscale(xaxis[:scale], false)

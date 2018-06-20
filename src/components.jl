@@ -61,6 +61,7 @@ function weave(x,y; ordering = Vector[x,y])
     for o in ordering
       try
           push!(ret, shift!(o))
+      catch
       end
     end
     done = isempty(x) && isempty(y)
@@ -345,6 +346,7 @@ function stroke(args...; alpha = nothing)
     elseif T <: Symbol || T <: AbstractString
       try
         color = parse(Colorant, string(arg))
+      catch
       end
     elseif allAlphas(arg)
       alpha = arg
@@ -377,6 +379,7 @@ function brush(args...; alpha = nothing)
     elseif T <: Symbol || T <: AbstractString
       try
         color = parse(Colorant, string(arg))
+      catch
       end
     elseif allAlphas(arg)
       alpha = arg
